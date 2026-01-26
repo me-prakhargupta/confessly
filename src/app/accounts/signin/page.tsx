@@ -1,41 +1,46 @@
-import Image from "next/image";
 import Link from "next/link";
-// import LoginAuthForm from "../../components/input/LoginAuthForm";
+import AuthInput from "@/components/input/AuthInput";
 
-export default function LoginPage() {
-    return(
-        <div className="flex">
-                <main className="bg-[url('/shadow.jpg')] min-h-screen w-230 bg-cover flex items-end bg-center"></main>
-                <div className="bg-white justify-items-start px-5">
-                    <div className=""><Link href="/"><Image className="mt-10" src="/brand-logo.png" alt="Trusto" width={200} height={200}/></Link></div>
-                    <div className="justify-items-start mt-3">
-                        <p className="text-3xl py-2 font-extrabold text-[#028174] ">Log in to your account</p>
-                        <p className="">Don't have an account? <Link href="/signup" className="font-medium  text-base hover:underline">Sign up</Link></p>
-                    </div>
-
-                    <div >
-                        <Link href="#" className="flex items-center justify-center gap-3 rounded border border-2 border-gray-400 mt-6 mb-8 w-90 py-3 hover:cursor-pointer transition-all shadow-sm hover:shadow hover:rounded-4xl">
-                            <Image src="/google.png" alt="Trusto" width={25} height={25} className="rounded-lg"/>
-                            <p className="px-1.5">Signup with Google</p>
-                        </Link>
-                    </div>
-
-                    <div className="flex items-center justify-center my-6 w-full">
-                        <div className="flex-1 border-t border-gray-300"></div>
-                        <span className="px-3 text-gray-600 text-sm whitespace-nowrap">Or with email and password</span>
-                        <div className="flex-1 border-t border-gray-300"></div>
-                    </div>
-
-                    <div className="w-90">
-                        {/* <LoginAuthForm type="text" name="name" lable="Email address*"/> */}
-                        {/* <LoginAuthForm type="password" name="password" lable="Password*"/> */}
-                    </div>
-
-                    <div className="flex items-center justify-center">
-                        <button className="bg-[#0AB68B] text-white hover:bg-[#028174] font-bold py-3 px-4 rounded hover:cursor-pointer transition-all shadow-sm hover:shadow hover:rounded-4xl w-90">Log in</button>
-                        <br/>
-                    </div>
-                </div>
+export default function Signin() {
+  return (
+    <div className="min-h-screen flex flex-col lg:flex-row bg-zinc-900">
+      <main className="w-full lg:w-1/2 flex items-center justify-center px-4 sm:px-6 py-10 lg:border-r lg:border-zinc-400/50">
+        <div className="w-full max-w-md">
+            <div>
+                <h1 className="text-orange-400 text-2xl sm:text-3xl font-bold leading-snug mb-7">Say, what <span className="bg-gradient-to-r from-[#FB923C] to-[#FDBA74] bg-clip-text text-transparent">you can't say.</span>.</h1>
             </div>
-    );
-};
+            <div>
+                <h2 className="text-xl sm:text-2xl font-bold mb-1">Log in to Confessly</h2>
+                <p className="mb-2 text-gray-300/60 font-medium text-sm sm:text-base">To keep and track your confessions.</p>
+            </div>
+
+            <div className="mt-4 sm:mt-6">
+                <AuthInput type="text" name="userEmail" lable="Username or email" />
+            </div>
+
+            <div className="mt-4 sm:mt-6">
+                <AuthInput type="password" name="password" lable="Password" />
+            </div>
+
+            <div className="mt-4 sm:mt-6">
+                <button className="w-full border border-orange-400 text-black bg-orange-400 hover:bg-orange-300 hover:border-orange-300 text-base sm:text-lg font-semibold py-3 sm:py-3.5 rounded-full hover:cursor-pointer">Log in</button>
+            </div>
+
+            <div className="flex justify-center">
+                <Link href="/accounts/reset" className="inline-block mt-5 text-center font-semibold">Forgot password?</Link>
+            </div>
+
+            <div className="flex justify-center mt-8 sm:mt-10">
+                <Link href="/accounts/signup" className="inline-block w-full text-orange-400 text-center font-semibold border border-orange-400 py-3 sm:py-4 rounded-full hover:cursor-pointer hover:bg-zinc-950 text-sm sm:text-base">Create new account</Link>
+            </div>
+        </div>
+      </main>
+
+      <aside className="hidden lg:block lg:w-1/2 relative min-h-screen bg-[url('/login.jpg')] bg-cover bg-center">
+        
+        <div className="absolute inset-0 bg-black/60" />
+
+      </aside>
+    </div>
+  );
+}

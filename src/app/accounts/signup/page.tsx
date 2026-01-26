@@ -43,7 +43,7 @@ export default function Home() {
                     </div>
 
                     <div className="mt-6">
-                        <button className="w-full border border-orange-400 text-black bg-orange-400 hover:bg-orange-300 hover:border-orange-300 text-base sm:text-lg font-semibold py-3 sm:py-4 rounded-full hover:cursor-pointer">Submit</button>
+                        <button className="w-full border border-orange-400 text-black bg-orange-400 hover:bg-orange-300 hover:border-orange-300 text-base sm:text-lg font-semibold py-2 sm:py-3 rounded-full hover:cursor-pointer">Submit</button>
                     </div>
                 </main>
 
