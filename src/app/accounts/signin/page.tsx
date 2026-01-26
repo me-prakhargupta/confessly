@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import AuthInput from "@/components/input/AuthInput";
 
@@ -14,17 +16,20 @@ export default function Signin() {
                 <p className="mb-2 text-gray-300/60 font-medium text-sm sm:text-base">To keep and track your confessions.</p>
             </div>
 
-            <div className="mt-4 sm:mt-6">
-                <AuthInput type="text" name="userEmail" lable="Username or email" />
-            </div>
+            {/* Form to handle user credentials for login */}
+            <form>
+                <div className="mt-4 sm:mt-6">
+                    <AuthInput type="text" name="userEmail" lable="Username or email" />
+                </div>
 
-            <div className="mt-4 sm:mt-6">
-                <AuthInput type="password" name="password" lable="Password" />
-            </div>
+                <div className="mt-4 sm:mt-6">
+                    <AuthInput type="password" name="password" lable="Password" />
+                </div>
 
-            <div className="mt-4 sm:mt-6">
-                <button className="w-full border border-orange-400 text-black bg-orange-400 hover:bg-orange-300 hover:border-orange-300 text-base sm:text-lg font-semibold py-3 sm:py-3.5 rounded-full hover:cursor-pointer">Log in</button>
-            </div>
+                <div className="mt-4 sm:mt-6">
+                    <button type="submit" className="w-full border border-orange-400 text-black bg-orange-400 hover:bg-orange-300 hover:border-orange-300 text-base sm:text-lg font-semibold py-3 sm:py-3.5 rounded-full hover:cursor-pointer">Log in</button>
+                </div>
+            </form>
 
             <div className="flex justify-center">
                 <Link href="/accounts/reset" className="inline-block mt-5 text-center font-semibold">Forgot password?</Link>

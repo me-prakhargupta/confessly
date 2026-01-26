@@ -1,18 +1,24 @@
 "use client";
 
+import { ChangeEventHandler } from "react";
+
 interface AuthFormProps {
   type?: string;
   lable: string;
   name: string;
+  value: string;
+  onChange: ChangeEventHandler<HTMLInputElement>;
 }
 
-export default function FloatingInput({ type, lable, name }: AuthFormProps) {
+export default function FloatingInput({ type, lable, name, value, onChange }: AuthFormProps) {
   return (
     <div className="relative w-full">
       <input
         type={type}
         id={name}
         name={name}
+        value={value}
+        onChange={onChange}
         placeholder=" "
         className="
           peer block w-full rounded-2xl outline-none border bg-zinc-950
