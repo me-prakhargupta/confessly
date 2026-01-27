@@ -1,8 +1,17 @@
+import Navbar from "@/components/common/Navbar";
+import Hero from "@/components/home/Hero";
+import Voices from "@/components/home/Voices";
+import Options from "@/components/home/Options";
+import Safety from "@/components/home/Safety";
 
 export default function Home() {
-    console.log(process.env.NEXT_PUBLIC_BACKEND_URL);
     return(
-        <main>
-        </main>
+        <>
+            <Navbar/>
+            <Hero/>
+            <Voices/>
+            <Options/>
+            <Safety/>
+        </>
     );
 }

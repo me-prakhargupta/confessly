@@ -2,32 +2,21 @@ import Link from "next/link";
 import AuthInput from "@/components/input/AuthInput";
 
 export default function Reset() {
-    return(
-        <div>
-            <main>
-                <div className="min-h-screen flex justify-center sm:items-center px-4 py-15 bg-zinc-900">
-                    <div className="w-full max-w-xl">
-                        <header>
-                            <h1 className="font-bold text-2xl sm:text-3xl md:text-4xl mb-1">Find your account</h1>
-                            <p className="font-medium text-lg sm:text-xl md:text-2xl">Enter your username or email.</p>
-                        </header>
+  return (
+    <section className="min-h-screen flex items-center justify-center px-4 bg-black">
+      <div className="w-full max-w-xl rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-md p-8 sm:p-10">
+        <header className="mb-8 text-center">
+          <h1 className="text-2xl sm:text-3xl font-semibold text-white mb-2">Find your account</h1>
+          <p className="text-white/60">Enter your username or email to continue.</p>
+        </header>
+        <div className="space-y-6">
+            <AuthInput type="text" name="userEmail" lable="Username or email"/>
+            
+            <p className="text-xs text-white/40 text-center">We may send security-related notifications to help you regain access.</p>
 
-                        <main>
-                            <div className="mt-3">
-                                <AuthInput type="text" name="userEmail" lable="Username or email"/>
-                            </div>
-
-                            <div>
-                                <p className="mt-5 font-semibold">You may receive notifications from us for security and login purposes.</p>
-                            </div>
-
-                            <div className="mt-6">
-                                <button className="w-full border border-orange-400 text-black bg-orange-400 hover:bg-orange-300 hover:border-orange-300 text-base sm:text-lg font-semibold py-2 sm:py-3 rounded-full hover:cursor-pointer">Continue</button>
-                            </div>
-                        </main>
-                    </div>
-                </div>
-            </main>
+            <button className="w-full rounded-xl bg-gradient-to-r from-orange-400 to-amber-500 text-black font-semibold py-3 hover:opacity-90 transition">Continue</button>
         </div>
-    );
+      </div>
+    </section>
+  );
 }

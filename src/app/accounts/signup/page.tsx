@@ -6,102 +6,185 @@ import { useRouter } from "next/navigation";
 import AuthInput from "@/components/input/AuthInput";
 import Link from "next/link";
 
-export default function Home() {
-    const router = useRouter();
-    const [form, setForm] = useState({
-        email: "",
-        password: "",
-        fullname: "",
-        username: ""
-    });
+export default function Signup() {
+  const router = useRouter();
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    fullname: "",
+    username: "",
+  });
 
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setForm({...form, [e.target.name]: e.target.value});
-    };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-    const handleSignup = async (e: React.FormEvent) => {
-        e.preventDefault();
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-        console.log("Handle signup triggered");
-        console.log("Form data: ", form);
-        setError("");
-        setLoading(true);
+    try {
+      const res = await signupUser(form);
 
-        try {
-            const res = await signupUser(form);
+      if (res.statusCode === 200) {
+        router.push("/");
+      } else {
+        setError(res.message || "Signup failed");
+      }
+    } catch (err: any) {
+      setError(err?.response?.data?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-            if(res.statusCode === 200) {
-                router.push("/");
-            } else {
-                setError(res.message || "Signup failed");
-            }
-        } catch(err: any) {
-            setError(err?.response?.data?.message || "Something went wrong");
-        } finally {
-            setLoading(false);
-        }
-    };
+  return (
+    <div className="relative min-h-screen flex items-center justify-center px-4 py-14 bg-zinc-950 overflow-hidden">
 
-    return(
-        <div className="min-h-screen flex justify-center items-center px-4 py-10 bg-zinc-900">
-            <div className="w-full max-w-xl">
-                <header>
-                    <h1 className="font-bold text-2xl sm:text-3xl md:text-4xl mb-1">Get started with Confessly</h1>
-                    <p className="mb-2 text-gray-300 font-medium text-sm sm:text-base">Some thoughts deserve a safe place.</p>
-                    <p className="font-medium text-lg sm:text-xl md:text-2xl">Create your account and confess freely</p>
-                </header>
+      {/* subtle ambient warmth */}
+      <div
+        aria-hidden
+        className="
+          absolute inset-0
+          bg-[radial-gradient(circle_at_30%_20%,rgba(251,146,60,0.08),transparent_70%)]
+          pointer-events-none
+        "
+      />
 
-                <main>
-                    <form onSubmit={handleSignup}> 
-                        <div className="mt-6">
-                            <p className="font-bold text-base sm:text-lg mb-2 sm:mb-3">Email address</p>
+      <div className="relative z-10 w-full max-w-xl">
 
-                            <AuthInput type="text" name="email" lable="Email address" value={form.email} onChange={handleChange}/>
+        {/* HEADER */}
+        <header className="mb-10 text-center">
+          <h1 className="text-white font-extrabold text-2xl sm:text-3xl md:text-4xl">
+            Get started with Confessly
+          </h1>
 
-                            <p className="font-semibold text-sm sm:text-base text-gray-300 mt-1">You may receive a notification from us. <span className="text-orange-400 hover:text-orange-300"><Link href="/">Learn why we ask for verification</Link></span></p>
-                        </div>
-                    
-                        <div className="mt-6">
-                            <p className="font-bold text-base sm:text-lg mb-2 sm:mb-3">Password</p>
+          <p className="mt-3 text-white/60 text-sm sm:text-base">
+            Some thoughts deserve a safe place.
+          </p>
 
-                            <AuthInput type="password" name="password" lable="Password" value={form.password} onChange={handleChange}/>
-                        </div>
+          <p className="mt-2 text-white/80 text-lg sm:text-xl">
+            Create your account and confess freely.
+          </p>
+        </header>
 
-                        <div className="mt-6">
-                            <p className="font-bold text-base sm:text-lg mb-2 sm:mb-3">Name</p>
+        {/* FORM */}
+        <form onSubmit={handleSignup} className="space-y-6">
 
-                            <AuthInput type="text" name="fullname" lable="Full name" value={form.fullname} onChange={handleChange}/>
-                        </div>
+          {error && (
+            <p className="text-sm text-red-400">
+              {error}
+            </p>
+          )}
 
-                        <div className="mt-6">
-                            <p className="font-bold text-base sm:text-lg mb-2 sm:mb-3">Username</p>
+          <div>
+            <AuthInput
+              type="text"
+              name="email"
+              lable="Email address"
+              value={form.email}
+              onChange={handleChange}
+            />
+            <p className="mt-1 text-sm text-white/50">
+              We may send verification emails to keep your account secure.
+            </p>
+          </div>
 
-                            <AuthInput type="text" name="username" lable="Username" value={form.username} onChange={handleChange}/>
+          <AuthInput
+            type="password"
+            name="password"
+            lable="Password"
+            value={form.password}
+            onChange={handleChange}
+          />
 
-                            <p className="font-semibold text-base text-gray-300 mt-1">Username can contain only lowercase letters (a–z), numbers (0–9), and underscores (_).</p>
-                        </div>
+          <AuthInput
+            type="text"
+            name="fullname"
+            lable="Full name"
+            value={form.fullname}
+            onChange={handleChange}
+          />
 
-                        <div>
-                            <p className="mt-7 font-semibold text-sm sm:text-base leading-relaxed">By tapping Submit, you agree to create an account and to Confessly's <span className="text-orange-400 hover:text-orange-300"><Link href="/">Terms</Link></span>, <span className="text-orange-400 hover:text-orange-300"><Link href="/">Privacy Policy</Link></span>  and <span className="text-orange-400 hover:text-orange-300"><Link href="/"> Cookies Policy</Link></span>.</p>
+          <div>
+            <AuthInput
+              type="text"
+              name="username"
+              lable="Username"
+              value={form.username}
+              onChange={handleChange}
+            />
+            <p className="mt-1 text-sm text-white/50">
+              Lowercase letters, numbers, and underscores only.
+            </p>
+          </div>
 
-                            <p className="mt-5 font-semibold">We use your details only to create, verify, and secure your account.</p>
-                        </div>
+          {/* TERMS */}
+          <p className="text-sm text-white/50 leading-relaxed">
+            By creating an account, you agree to Confessly’s{" "}
+            <Link href="/" className="text-orange-400 hover:text-orange-300">
+              Terms
+            </Link>
+            ,{" "}
+            <Link href="/" className="text-orange-400 hover:text-orange-300">
+              Privacy Policy
+            </Link>{" "}
+            and{" "}
+            <Link href="/" className="text-orange-400 hover:text-orange-300">
+              Cookies Policy
+            </Link>
+            .
+          </p>
 
-                        <div className="mt-6">
-                            <button type="submit" className="w-full border border-orange-400 text-black bg-orange-400 hover:bg-orange-300 hover:border-orange-300 text-base sm:text-lg font-semibold py-2 sm:py-3 rounded-full hover:cursor-pointer">{loading ? "Creating account..." : "Submit"}</button>
-                        </div>
-                    </form>
-                </main>
+          <p className="text-sm text-white/50">
+            We use your details only to secure your account.
+          </p>
 
-                <section>
-                    <div className="flex justify-center mt-10">
-                        <Link href="/accounts/signin" className="inline-block w-full text-center font-semibold border border-white/70 py-3 sm:py-4 rounded-full hover:cursor-pointer hover:bg-zinc-950 text-sm sm:text-base">I already have an account</Link>
-                    </div>
-                </section>
-            </div>
+          {/* SUBMIT */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="
+              w-full
+              rounded-full
+              bg-orange-400
+              border border-orange-400
+              text-black font-semibold
+              text-base sm:text-lg
+              py-3 sm:py-3.5
+              transition
+              hover:bg-orange-300
+              disabled:opacity-70
+            "
+          >
+            {loading ? "Creating account..." : "Create account"}
+          </button>
+        </form>
+
+        {/* SIGN IN LINK */}
+        <div className="mt-10">
+          <Link
+            href="/accounts/signin"
+            className="
+              inline-block w-full
+              text-center font-semibold
+              border border-white/20
+              py-3 sm:py-4
+              rounded-full
+              hover:bg-zinc-900
+              transition
+              text-sm sm:text-base
+              text-white/80
+            "
+          >
+            I already have an account
+          </Link>
         </div>
-    );
+      </div>
+    </div>
+  );
 }
