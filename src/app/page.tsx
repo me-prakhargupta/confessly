@@ -1,7 +1,6 @@
-import Navbar from "@/components/common/Navbar";
+import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/home/Hero";
-import Voices from "@/components/home/Voices";
-import Options from "@/components/home/Options";
+import Choices from "@/components/home/Choices";
 import Safety from "@/components/home/Safety";
 
 export default function Home() {
@@ -9,8 +8,7 @@ export default function Home() {
         <>
             <Navbar/>
             <Hero/>
-            <Voices/>
-            <Options/>
+            <Choices/>
             <Safety/>
         </>
     );

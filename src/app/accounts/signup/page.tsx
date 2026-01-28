@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import AuthInput from "@/components/input/AuthInput";
 import Link from "next/link";
+import { toast } from "sonner";
 
 export default function Signup() {
   const router = useRouter();
@@ -18,11 +19,11 @@ export default function Signup() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSignup = async (e: React.FormEvent) => {
+  const signupHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
@@ -31,12 +32,14 @@ export default function Signup() {
       const res = await signupUser(form);
 
       if (res.statusCode === 200) {
-        router.push("/");
+        router.push("/me");
       } else {
         setError(res.message || "Signup failed");
+        toast.error(error);
       }
     } catch (err: any) {
       setError(err?.response?.data?.message || "Something went wrong");
+      toast.error(err?.response?.data?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -58,39 +61,28 @@ export default function Signup() {
       <div className="relative z-10 w-full max-w-xl">
 
         {/* HEADER */}
-        <header className="mb-10 text-center">
+        <header className="mb-10 px-2 sm:text-center">
           <h1 className="text-white font-extrabold text-2xl sm:text-3xl md:text-4xl">
-            Get started with Confessly
+            A place to begin
           </h1>
 
           <p className="mt-3 text-white/60 text-sm sm:text-base">
-            Some thoughts deserve a safe place.
-          </p>
-
-          <p className="mt-2 text-white/80 text-lg sm:text-xl">
-            Create your account and confess freely.
+            So you have somewhere to return to.
           </p>
         </header>
 
         {/* FORM */}
-        <form onSubmit={handleSignup} className="space-y-6">
-
-          {error && (
-            <p className="text-sm text-red-400">
-              {error}
-            </p>
-          )}
-
+        <form onSubmit={signupHandler} className="space-y-6">
           <div>
             <AuthInput
               type="text"
               name="email"
-              lable="Email address"
+              lable="Email"
               value={form.email}
-              onChange={handleChange}
+              onChange={changeHandler}
             />
             <p className="mt-1 text-sm text-white/50">
-              We may send verification emails to keep your account secure.
+              We’ll only use this to help you sign in
             </p>
           </div>
 
@@ -99,15 +91,15 @@ export default function Signup() {
             name="password"
             lable="Password"
             value={form.password}
-            onChange={handleChange}
+            onChange={changeHandler}
           />
 
           <AuthInput
             type="text"
             name="fullname"
-            lable="Full name"
+            lable="Full Name"
             value={form.fullname}
-            onChange={handleChange}
+            onChange={changeHandler}
           />
 
           <div>
@@ -116,7 +108,7 @@ export default function Signup() {
               name="username"
               lable="Username"
               value={form.username}
-              onChange={handleChange}
+              onChange={changeHandler}
             />
             <p className="mt-1 text-sm text-white/50">
               Lowercase letters, numbers, and underscores only.
@@ -140,49 +132,58 @@ export default function Signup() {
             .
           </p>
 
-          <p className="text-sm text-white/50">
-            We use your details only to secure your account.
-          </p>
-
           {/* SUBMIT */}
           <button
-            type="submit"
-            disabled={loading}
-            className="
-              w-full
-              rounded-full
-              bg-orange-400
-              border border-orange-400
-              text-black font-semibold
-              text-base sm:text-lg
-              py-3 sm:py-3.5
-              transition
-              hover:bg-orange-300
-              disabled:opacity-70
-            "
-          >
-            {loading ? "Creating account..." : "Create account"}
-          </button>
+  type="submit"
+  disabled={loading}
+  className="
+    w-full
+    relative
+    rounded-full
+    bg-orange-400
+    border border-orange-400
+    text-black
+    font-medium
+    text-base sm:text-lg
+    py-3 sm:py-3.5
+    transition-all
+    hover:bg-orange-300
+    hover:shadow-[0_0_20px_rgba(251,146,60,0.35)]
+    active:scale-[0.99]
+    disabled:opacity-70
+    hover:cursor-pointer
+    disabled:cursor-not-allowed
+  "
+>
+  {loading ? "Creating account…" : "Continue"}
+</button>
+
         </form>
 
         {/* SIGN IN LINK */}
         <div className="mt-10">
           <Link
-            href="/accounts/signin"
-            className="
-              inline-block w-full
-              text-center font-semibold
-              border border-white/20
-              py-3 sm:py-4
-              rounded-full
-              hover:bg-zinc-900
-              transition
-              text-sm sm:text-base
-              text-white/80
-            "
-          >
-            I already have an account
-          </Link>
+  href="/accounts/signin"
+  className="
+    inline-flex
+    w-full
+    justify-center
+    text-center
+    font-medium
+    border border-white/10
+    py-3 sm:py-4
+    rounded-full
+    text-sm sm:text-base
+    text-white/60
+    transition-all
+    hover:text-white
+    hover:border-white/20
+    hover:bg-zinc-900/40
+  "
+>
+  Sign in instead
+</Link>
+
         </div>
       </div>
     </div>

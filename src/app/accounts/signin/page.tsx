@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import AuthInput from "@/components/input/AuthInput";
+import { toast } from "sonner";
 
 export default function Signin() {
   const router = useRouter();
@@ -14,7 +15,6 @@ export default function Signin() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -22,19 +22,16 @@ export default function Signin() {
 
   const signinHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
 
     try {
-      const res = await signinUser(form);
-
-      if (res.statusCode === 200) {
-        router.push("/");
-      } else {
-        setError(res.message || "Signin failed");
-      }
+      await signinUser(form);
+      toast.success("Logged in successfully");
+      router.push("/me");
+      setForm({ identifier: "", password: "" });
     } catch (err: any) {
-      setError(err?.response?.data?.message || "Something went wrong");
+      console.log("CATCH BLOCK HIT", err);
+      toast.error(err?.response?.data?.message || "Something went wrong")
     } finally {
       setLoading(false);
     }
@@ -42,8 +39,6 @@ export default function Signin() {
 
   return (
     <div className="relative min-h-screen flex flex-col lg:flex-row bg-zinc-950 overflow-hidden">
-
-      {/* subtle ambient warmth */}
       <div
         aria-hidden
         className="
@@ -54,35 +49,33 @@ export default function Signin() {
       />
 
       {/* LEFT: FORM */}
-      <main className="relative z-10 w-full lg:w-1/2 flex items-center justify-center px-4 sm:px-6 py-10 lg:border-r lg:border-white/10">
+      <main className="relative mt-25 z-10 w-full lg:w-1/2 flex items-center justify-center px-4 sm:px-6 py-10 lg:border-r lg:border-white/10">
         <div className="w-full max-w-md">
 
           {/* Hero line */}
-          <h1 className="text-orange-400 text-2xl sm:text-3xl font-bold leading-snug mb-7">
-            Say, what{" "}
+          <h1 className="text-orange-400 text-3xl sm:text-3xl  font-bold sm:font-extrabold leading-snug mb-7">
+             A quiet place to{" "}
             <span className="bg-gradient-to-r from-orange-400 to-orange-300 bg-clip-text text-transparent">
-              you can’t say
-            </span>
-            .
-          </h1>
+              return to.
+            </span></h1>
 
           {/* Heading */}
-          <h2 className="text-white text-xl sm:text-2xl font-bold mb-1">
-            Log in to Confessly
-          </h2>
+          {/* <h2 className="text-white text-xl sm:text-2xl font-bold mb-1">
+            A quiet place to return to.
+          </h2> */}
           <p className="mb-4 text-white/60 font-medium text-sm sm:text-base">
-            To keep and track your confessions.
+           To come back to what you’ve shared.
           </p>
 
           {/* Error */}
-          {error && (
+          {/* {error && (
             <p className="mb-4 text-sm text-red-400">
               {error}
             </p>
-          )}
+          )} */}
 
           {/* Form */}
-          <form onSubmit={signinHandler}>
+          <form onSubmit={signinHandler} noValidate>
             <div className="mt-4 sm:mt-6">
               <AuthInput
                 type="text"
@@ -117,10 +110,11 @@ export default function Signin() {
                   py-3 sm:py-3.5
                   transition
                   hover:bg-orange-300
+                  hover:cursor-pointer
                   disabled:opacity-70
                 "
               >
-                {loading ? "Logging in..." : "Log in"}
+                {loading ? "Logging in..." : "Continue"}
               </button>
             </div>
           </form>
@@ -129,7 +123,7 @@ export default function Signin() {
           <div className="flex justify-center">
             <Link
               href="/accounts/reset"
-              className="inline-block mt-5 text-sm text-white/60 hover:text-white transition"
+              className="inline-block mt-5 text-sm text-white/50 hover:text-white/70 transition"
             >
               Forgot password?
             </Link>
@@ -150,7 +144,7 @@ export default function Signin() {
                 text-sm sm:text-base
               "
             >
-              Create new account
+              Start fresh
             </Link>
           </div>
         </div>

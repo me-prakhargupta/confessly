@@ -31,3 +31,8 @@ export const sendMessage = async(data: MessageData) => {
     const res = await api.post("/api/v1/messages/send", data);
     return res.data;
 };
+
+export const shareThought = async(thought: string) => {
+    const res = await api.post("/api/v1/thought/share", {thought});
+    return res.data;
+};

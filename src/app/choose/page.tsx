@@ -1,4 +1,4 @@
-import Options from "@/components/home/Options";
+import Options from "@/components/home/Choices";
 
 export default function Choose() {
     return(
