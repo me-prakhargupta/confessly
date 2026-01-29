@@ -37,17 +37,17 @@ export default function SendToUserPage() {
       <section className="relative z-10 max-w-xl mx-auto space-y-10">
 
         {/* Back */}
-        <Link
+        {/* <Link
           href="/me"
           className="text-xs text-white/30 hover:text-white/50 transition"
         >
           ← Back to your space
-        </Link>
+        </Link> */}
 
         {/* Context */}
         <header className="space-y-3">
           <h1 className="text-lg font-medium">
-            Write to <span className="text-white/80">@{username}</span>
+            Write to <span className="text-white/80"><Link href={`/u/${username}`}>@{username}</Link></span>
           </h1>
 
           <p className="text-sm text-white/50 leading-relaxed">
@@ -105,6 +105,7 @@ export default function SendToUserPage() {
               hover:bg-white/20
               disabled:opacity-40
               transition
+              hover:cursor-pointer
             "
           >
             {sending ? "Sending…" : "Send"}

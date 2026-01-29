@@ -45,12 +45,12 @@ export default function ThoughtPage() {
       <section className="relative z-10 max-w-xl mx-auto space-y-12">
 
         {/* Back */}
-        <Link
+        {/* <Link
           href="/choose"
           className="text-xs text-white/30 hover:text-white/50 transition"
         >
           ← Back
-        </Link>
+        </Link> */}
 
         {/* Header */}
         <header className="space-y-4">

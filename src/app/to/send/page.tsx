@@ -65,12 +65,12 @@ export default function SendMessage() {
             Take your time.
           </p>
 
-          <Link
+          {/* <Link
             href="/choose"
             className="block text-xs text-white/30 hover:text-white/50 transition"
           >
             ← Back
-          </Link>
+          </Link> */}
 
           <header className="space-y-3">
             <h1 className="text-xl font-medium">
