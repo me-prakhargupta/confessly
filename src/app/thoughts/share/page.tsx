@@ -34,7 +34,7 @@ export default function ThoughtPage() {
   };
 
   return (
-    <main className="relative min-h-screen px-6 py-20 text-white bg-black overflow-hidden">
+    <main className="relative min-h-screen px-6 py-20 mt-10 sm:mt-0 text-white bg-black overflow-hidden">
 
       {/* Ambient warmth */}
       <div className="absolute inset-0 pointer-events-none">
@@ -44,13 +44,6 @@ export default function ThoughtPage() {
 
       <section className="relative z-10 max-w-xl mx-auto space-y-12">
 
-        {/* Back */}
-        {/* <Link
-          href="/choose"
-          className="text-xs text-white/30 hover:text-white/50 transition"
-        >
-          ← Back
-        </Link> */}
 
         {/* Header */}
         <header className="space-y-4">

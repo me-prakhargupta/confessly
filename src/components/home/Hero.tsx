@@ -19,7 +19,6 @@ export default function Hero() {
         aria-hidden
         className="
           absolute inset-0
-          bg-[url('/chair.jpg')]
           bg-no-repeat
           bg-right
           bg-contain

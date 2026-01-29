@@ -1,12 +1,11 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 
 export default function SendToUserPage() {
   const { username } = useParams<{ username: string }>();
-  const router = useRouter();
 
   const [content, setContent] = useState("");
   const [sending, setSending] = useState(false);
@@ -21,7 +20,6 @@ export default function SendToUserPage() {
 
     setTimeout(() => {
       setSending(false);
-      router.push("/me");
     }, 800);
   };
 

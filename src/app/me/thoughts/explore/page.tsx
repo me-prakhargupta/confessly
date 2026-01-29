@@ -84,7 +84,7 @@ export default function PublicThoughtsPage() {
               </p>
 
               {/* Reactions (Explore-specific) */}
-              <div className="flex items-center gap-6 text-xs text-white/45">
+              {/* <div className="flex items-center gap-6 text-xs text-white/45">
                 <button className="hover:text-white/70 transition hover:cursor-pointer">
                   I felt this {t.reactions.felt > 0 && `· ${t.reactions.felt}`}
                 </button>
@@ -96,7 +96,37 @@ export default function PublicThoughtsPage() {
                   Let it be{" "}
                   {t.reactions.letting > 0 && `· ${t.reactions.letting}`}
                 </button>
-              </div>
+              </div> */}
+
+<div className="flex flex-wrap items-center gap-2 text-xs text-white/70">
+  {/* Felt */}
+  <button className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 transition">
+    <span>🧡</span>
+    <span className="hidden sm:inline">I felt this</span>
+    {t.reactions.felt > 0 && (
+      <span className="text-white/40">· {t.reactions.felt}</span>
+    )}
+  </button>
+
+  {/* Holding */}
+  <button className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 transition">
+    <span>🫂</span>
+    <span className="hidden sm:inline">Holding this</span>
+    {t.reactions.holding > 0 && (
+      <span className="text-white/40">· {t.reactions.holding}</span>
+    )}
+  </button>
+
+  {/* Let it be */}
+  <button className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 transition">
+    <span>🌿</span>
+    <span className="hidden sm:inline">Let it be</span>
+    {t.reactions.letting > 0 && (
+      <span className="text-white/40">· {t.reactions.letting}</span>
+    )}
+  </button>
+</div>
+
 
               {/* Actions */}
               <div className="flex items-center gap-6 text-xs text-white/40">

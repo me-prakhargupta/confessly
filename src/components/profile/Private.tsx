@@ -8,7 +8,7 @@ type PrivateProfileProps = {
 
 export default function PrivateProfilePage({ username, src }: PrivateProfileProps) {
   return (
-    <main className="relative min-h-screen flex sm:items-center sm:justify-center px-6 py-25 text-white overflow-hidden bg-black">
+    <main className="relative min-h-screen flex justify-center sm:items-center px-6 py-40 text-white overflow-hidden bg-black">
 
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(253,186,116,0.12),transparent_65%)]" />
