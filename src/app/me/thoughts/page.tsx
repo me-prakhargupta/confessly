@@ -1,14 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
 "use client";
 
 import Link from "next/link";
@@ -43,60 +32,122 @@ const thoughts = [
 
 export default function ThoughtsPage() {
   const [openComments, setOpenComments] = useState<string | null>(null);
+  const [newThought, setNewThought] = useState("");
+  const [posting, setPosting] = useState(false);
+
+  const handleShareThought = async () => {
+    if (!newThought.trim()) return;
+
+    try {
+      setPosting(true);
+
+      await fetch("/api/thoughts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // send cookies so backend can read user from token
+        body: JSON.stringify({
+          content: newThought,
+        }),
+      });
+
+      setNewThought("");
+      // later you can refetch thoughts from backend here
+    } catch (err) {
+      console.error("Failed to share thought", err);
+    } finally {
+      setPosting(false);
+    }
+  };
 
   return (
     <main className="min-h-screen bg-black text-white px-6 py-14">
       <section className="max-w-3xl mx-auto space-y-10">
         {/* Header */}
         <header className="space-y-4">
-  {/* <Link
-    href="/me/thoughts"
-    className="text-xs text-white/40 hover:text-white/60 transition"
-  >
-    ← Back to your space
-  </Link> */}
+          <div className="space-y-1">
+            <h1 className="text-2xl font-medium">Your thoughts</h1>
+            <p className="text-sm text-white/40">
+              What you’ve written, held here.
+            </p>
+          </div>
 
-  <div className="space-y-1">
-    <h1 className="text-2xl font-medium">Your thoughts</h1>
-    <p className="text-sm text-white/40">
-      What you’ve written, held here.
-    </p>
-  </div>
+          {/* Explore prompt */}
+          <section
+            className="
+              mt-6
+              rounded-xl
+              bg-gradient-to-r from-white/6 to-white/2
+              border border-white/5
+              px-6 py-5
+              flex items-center justify-between
+            "
+          >
+            <p className="text-sm text-white/70">
+              Some thoughts are meant to be seen.
+            </p>
 
-  {/* Explore prompt */}
-  <section
-    className="
-      mt-6
-      rounded-xl
-      bg-gradient-to-r from-white/6 to-white/2
-      border border-white/5
-      px-6 py-5
-      flex items-center justify-between
-    "
-  >
-    <p className="text-sm text-white/70">
-      Some thoughts are meant to be seen.
-    </p>
+            <Link
+              href="/me/thoughts/explore"
+              className="
+                text-xs
+                text-white/60
+                hover:text-white/90
+                transition
+                flex items-center gap-1
+                hover:cursor-pointer
+              "
+            >
+              Explore
+            </Link>
+          </section>
+        </header>
 
-    <Link
-      href="/me/thoughts/explore"
-      className="
-        text-xs
-        text-white/60
-        hover:text-white/90
-        transition
-        flex items-center gap-1
-        hover:cursor-pointer
-      "
-    >
-      Explore
-      {/* <span aria-hidden>→</span> */}
-    </Link>
-  </section>
-</header>
+        {/* Share your thought */}
+        <section
+          className="
+            rounded-2xl
+            bg-white/5
+            backdrop-blur-md
+            px-6 py-5
+            space-y-4
+          "
+        >
+          <p className="text-sm text-white/60">
+            Share your thought
+          </p>
 
+          <textarea
+            value={newThought}
+            onChange={(e) => setNewThought(e.target.value)}
+            placeholder="Write something you want to put down…"
+            rows={3}
+            className="
+              w-full rounded-xl bg-white/5 px-4 py-3 text-sm
+              text-white/80 placeholder:text-white/30
+              outline-none focus:bg-white/8 transition resize-none
+            "
+          />
 
-        {/* Thoughts */}
+          <div className="flex justify-end">
+            <button
+              onClick={handleShareThought}
+              disabled={posting || !newThought.trim()}
+              className="
+                text-xs px-4 py-2 rounded-lg
+                bg-orange-500/20 text-orange-300
+                hover:bg-orange-500/30
+                disabled:opacity-40 disabled:cursor-not-allowed
+                transition
+              "
+            >
+              {posting ? "Sharing…" : "Share quietly"}
+            </button>
+          </div>
+        </section>
+
+        {/* Thoughts list */}
         <div className="space-y-6">
           {thoughts.map((t) => (
             <article
@@ -144,9 +195,7 @@ export default function ThoughtsPage() {
               <div className="flex items-center gap-6 text-xs text-white/40">
                 <button
                   onClick={() =>
-                    setOpenComments(
-                      openComments === t.id ? null : t.id
-                    )
+                    setOpenComments(openComments === t.id ? null : t.id)
                   }
                   className="hover:text-white/70 transition hover:cursor-pointer"
                 >
@@ -172,10 +221,7 @@ export default function ThoughtsPage() {
                 <div className="pt-4 space-y-4 border-t border-white/10">
                   {t.comments.length > 0 ? (
                     t.comments.map((c) => (
-                      <div
-                        key={c.id}
-                        className="text-sm text-white/70"
-                      >
+                      <div key={c.id} className="text-sm text-white/70">
                         <p>{c.text}</p>
                         <p className="text-xs text-white/30 mt-1">
                           {c.time}
@@ -205,162 +251,3 @@ export default function ThoughtsPage() {
     </main>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import Link from "next/link";
-
-// type Confession = {
-//   id: string;
-//   content: string;
-//   isPublic: boolean;
-//   createdAt: string;
-// };
-
-// export default async function MyConfessionsPage() {
-//   const confessions: Confession[] = [
-//     {
-//       id: "2",
-//       content:
-//         "I wish it was easier to talk about things without explaining myself.",
-//       isPublic: false,
-//       createdAt: "5 days ago",
-//     },
-//     {
-//       id: "1",
-//       content:
-//         "Some days I feel fine, and some days I don’t know why I’m tired.",
-//       isPublic: true,
-//       createdAt: "2 days ago",
-//     },
-//   ];
-
-//   const ordered = [...confessions].reverse();
-
-//   return (
-//     <main className="relative min-h-screen px-6 py-14 md:py-20 text-white bg-black overflow-hidden">
-
-//       {/* Ambient warmth */}
-//       <div className="absolute inset-0 pointer-events-none">
-//         <div className="absolute bottom-0 left-0 h-[280px] w-[280px] rounded-full bg-orange-300/8 blur-[120px]" />
-//         <div className="absolute top-0 right-0 h-[240px] w-[240px] rounded-full bg-orange-400/6 blur-[140px]" />
-//       </div>
-
-//       <section className="relative z-10 max-w-3xl mx-auto space-y-12">
-
-//         {/* Header */}
-//         <header className="space-y-3">
-//           <Link
-//             href="/me"
-//             className="text-xs text-white/40 hover:text-white/60 transition"
-//           >
-//             ← Back to your space
-//           </Link>
-
-//           <h1 className="text-xl font-medium tracking-tight">
-//             Your confessions
-//           </h1>
-
-//           <p className="text-sm text-white/55 max-w-xl">
-//             What you’ve written, held here.
-//           </p>
-//         </header>
-
-//         {/* 🌍 Public confessions redirect */}
-//         <section className="rounded-xl bg-white/4 backdrop-blur-md px-6 py-5">
-//           <p className="text-sm text-white/70">
-//             Some thoughts are meant to be seen.
-//           </p>
-
-//           <Link
-//             href="/thoughts/public"
-//             className="inline-block mt-2 text-xs text-white/40 hover:text-white/70 transition"
-//           >
-//             Read public confessions →
-//           </Link>
-//         </section>
-
-//         {/* Confessions list */}
-//         <section className="space-y-6">
-
-//           {ordered.length === 0 ? (
-//             <div className="rounded-xl bg-white/4 px-6 py-6 text-sm text-white/45">
-//               You haven’t written anything yet.
-//               <br />
-//               When you do, it will live here.
-//             </div>
-//           ) : (
-//             ordered.map((confession) => (
-//               <article
-//                 key={confession.id}
-//                 className="rounded-xl bg-white/6 backdrop-blur-md px-6 py-5 space-y-4"
-//               >
-//                 {/* Content */}
-//                 <p className="text-sm text-white/80 leading-relaxed">
-//                   {confession.content}
-//                 </p>
-
-//                 {/* Meta + actions */}
-//                 <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between text-xs text-white/45">
-//                   <span>
-//                     {confession.isPublic ? "Public" : "Private"} ·{" "}
-//                     {confession.createdAt}
-//                   </span>
-
-//                   <div className="flex gap-4">
-//                     <button className="hover:text-white transition">
-//                       Edit
-//                     </button>
-//                     <button className="hover:text-white transition">
-//                       {confession.isPublic ? "Hide" : "Make public"}
-//                     </button>
-//                     <button className="hover:text-red-400 transition">
-//                       Delete
-//                     </button>
-//                   </div>
-//                 </div>
-//               </article>
-//             ))
-//           )}
-
-//         </section>
-
-//         {/* Footer */}
-//         <footer className="pt-6">
-//           <p className="text-xs text-white/30">
-//             This is your record — not a feed, not a performance.
-//           </p>
-//         </footer>
-
-//       </section>
-//     </main>
-//   );
-// }

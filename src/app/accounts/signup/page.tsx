@@ -30,13 +30,8 @@ export default function Signup() {
 
     try {
       const res = await signupUser(form);
-
-      if (res.statusCode === 200) {
-        router.push("/me");
-      } else {
-        setError(res.message || "Signup failed");
-        toast.error(error);
-      }
+      toast.success("Your account has been created successfully. We’re glad to have you with us.");
+      router.push("/me");
     } catch (err: any) {
       setError(err?.response?.data?.message || "Something went wrong");
       toast.error(err?.response?.data?.message || "Something went wrong");
@@ -58,7 +53,7 @@ export default function Signup() {
         "
       />
 
-      <div className="relative z-10 w-full max-w-xl">
+      <div className="relative py-10 sm:py-0 z-10 w-full max-w-xl">
 
         {/* HEADER */}
         <header className="mb-10 px-2 sm:text-center">

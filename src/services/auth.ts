@@ -39,7 +39,7 @@ export const shareThought = async(thought: string) => {
     return res.data;
 };
 
-export const verifyToken = async(token: string) => {
+export const meUser = async(token: string) => {
     const res = await api.get("api/v1/auth/me", {
         headers: {
             Authorization: `Bearer ${token}`
@@ -49,7 +49,7 @@ export const verifyToken = async(token: string) => {
     return res.data;
 };
 
-export const logoutUser = async() => {
+export const signoutUser = async() => {
     const res = await api.post("/api/v1/auth/logout");
     return res.data;
 };

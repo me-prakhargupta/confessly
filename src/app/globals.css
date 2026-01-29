@@ -165,3 +165,17 @@
 #nprogress .peg {
   box-shadow: none;
 }
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  /* use translucent dark instead of solid */
+  -webkit-box-shadow: 0 0 0 1000px rgba(24, 24, 27, 0.55) inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  caret-color: #ffffff;
+  border-radius: 1rem;
+  transition: background-color 5000s ease-in-out 0s;
+}
+

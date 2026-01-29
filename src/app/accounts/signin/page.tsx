@@ -26,11 +26,10 @@ export default function Signin() {
 
     try {
       await signinUser(form);
-      toast.success("Logged in successfully");
+      toast.success("Welcome back. You’ve been logged in successfully.");
       router.push("/me");
       setForm({ identifier: "", password: "" });
     } catch (err: any) {
-      console.log("CATCH BLOCK HIT", err);
       toast.error(err?.response?.data?.message || "Something went wrong")
     } finally {
       setLoading(false);
@@ -49,11 +48,11 @@ export default function Signin() {
       />
 
       {/* LEFT: FORM */}
-      <main className="relative mt-25 z-10 w-full lg:w-1/2 flex items-center justify-center px-4 sm:px-6 py-10 lg:border-r lg:border-white/10">
+      <main className="relative mt-15 sm:mt-0 z-10 w-full lg:w-1/2 flex items-center justify-center px-4 sm:px-6 py-10 lg:border-r lg:border-white/10">
         <div className="w-full max-w-md">
 
           {/* Hero line */}
-          <h1 className="text-orange-400 text-3xl sm:text-3xl  font-bold sm:font-extrabold leading-snug mb-7">
+          <h1 className="text-orange-400 text-2xl sm:text-3xl font-extrabold sm:font-extrabold leading-snug mb-7">
              A quiet place to{" "}
             <span className="bg-gradient-to-r from-orange-400 to-orange-300 bg-clip-text text-transparent">
               return to.

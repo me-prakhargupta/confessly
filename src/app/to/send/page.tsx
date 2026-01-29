@@ -41,7 +41,7 @@ export default function SendMessage() {
   };
 
   return (
-    <main className="relative min-h-screen bg-black text-white overflow-hidden flex items-center px-6">
+    <main className="relative min-h-screen bg-black text-white overflow-hidden flex py-12 sm:py-0 sm:items-center px-6">
 
       {/* Ambient warmth */}
       <div className="absolute inset-0 pointer-events-none">
@@ -61,7 +61,7 @@ export default function SendMessage() {
       >
         {/* Intro */}
         <div className="space-y-5">
-          <p className="text-center text-sm text-white/40">
+          <p className="sm:text-center text-sm text-white/40">
             Take your time.
           </p>
 

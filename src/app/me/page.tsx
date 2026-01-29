@@ -2,53 +2,31 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { logoutUser } from "@/services/auth";
+import { signoutUser } from "@/services/auth";
 import { toast } from "sonner";
 
 export default function MePage() {
   const router = useRouter();
 
   const user = {
+    fullName: "Prakhar Gupta",
     username: "meprakhargupta",
+    bio: "Trying to put things down, gently.",
     avatar: "/login.jpg",
     confessionCount: 2,
     receivedCount: 1,
     today: "Feeling a little tired, but still showing up.",
   };
 
-  const [username, setUsername] = useState("");
-
-  const profileLink = `${typeof window !== "undefined" ? window.location.origin : ""}/${user.username}`;
-
-  const goToSendPage = () => {
-    if (!username.trim()) return;
-    router.push(`/me/send/${username.trim()}`);
-  };
-
-  const copyLink = async () => {
-    await navigator.clipboard.writeText(profileLink);
-    toast.success("Link copied. Share it when you’re ready.");
-  };
-
-  const shareLink = async () => {
-    if (navigator.share) {
-      await navigator.share({
-        title: "A quiet place to write",
-        url: profileLink,
-      });
-    } else {
-      copyLink();
-    }
-  };
-
-  const logoutHandler = async () => {
+  const signoutHandler = async () => {
     try {
-      await logoutUser();
+      await signoutUser();
       router.push("/accounts/signin");
-      toast.success("You’ve been logged out. We’ll be here when you return.");
-    } catch {}
+      toast("You’ve been logged out. We’ll be here when you return.");
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message);
+    }
   };
 
   return (
@@ -59,29 +37,30 @@ export default function MePage() {
         <div className="absolute bottom-0 right-0 h-[220px] w-[220px] rounded-full bg-orange-300/8 blur-[120px]" />
       </div>
 
-      <section className="relative z-10 max-w-3xl mx-auto space-y-16">
+      <section className="relative z-10 max-w-3xl mx-auto space-y-14">
 
-        {/* Header */}
-        <header className="space-y-2">
-          <div className="flex items-center gap-4">
-            <div className="h-11 w-11 rounded-full overflow-hidden bg-white/5">
-              <Image
-                src={user.avatar}
-                alt="Your profile photo"
-                width={44}
-                height={44}
-                className="h-full w-full object-cover opacity-90"
-              />
-            </div>
+        {/* Top profile header */}
+        <header className="flex items-start gap-5">
+          <div className="h-20 w-20 rounded-full overflow-hidden bg-white/5 shrink-0">
+            <Image
+              src={user.avatar}
+              alt="Your profile photo"
+              width={80}
+              height={80}
+              className="h-full w-full object-cover opacity-90"
+            />
+          </div>
 
-            <div>
-              <h1 className="text-base font-medium">
-                {user.username}
-              </h1>
-              <p className="text-xs text-white/45">
-                Only you can see this
-              </p>
-            </div>
+          <div className="space-y-1">
+            <h1 className="text-lg font-medium">
+              {user.fullName}
+            </h1>
+            <p className="text-sm text-white/45">
+              @{user.username}
+            </p>
+            <p className="text-sm text-white/60 mt-2 max-w-md leading-relaxed">
+              {user.bio}
+            </p>
           </div>
         </header>
 
@@ -115,41 +94,8 @@ export default function MePage() {
           )}
         </Link>
 
-        {/* Your link (NEW) */}
-        <section className="space-y-3">
-          <p className="text-xs text-white/40">
-            Your link
-          </p>
-
-          <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-3">
-            <p className="text-sm text-white/70 truncate">
-              {profileLink}
-            </p>
-
-            <div className="flex items-center gap-4 shrink-0">
-              <button
-                onClick={copyLink}
-                className="text-xs text-white/45 hover:text-white/80 transition"
-              >
-                Copy
-              </button>
-
-              <button
-                onClick={shareLink}
-                className="text-xs text-white/45 hover:text-white/80 transition"
-              >
-                Share
-              </button>
-            </div>
-          </div>
-
-          <p className="text-xs text-white/35">
-            Share this if you want others to write to you.
-          </p>
-        </section>
-
         {/* Direct send */}
-        <section className="space-y-3">
+        {/* <section className="space-y-3">
           <p className="text-xs text-white/40">
             Want to write to someone directly?
           </p>
@@ -173,7 +119,7 @@ export default function MePage() {
               Send →
             </button>
           </div>
-        </section>
+        </section> */}
 
         {/* Your thoughts */}
         <Link
@@ -190,16 +136,16 @@ export default function MePage() {
         </Link>
 
         {/* Footer */}
-        <footer className="pt-12 flex items-center justify-between">
+        <footer className="pt-10 flex items-center justify-between">
           <p className="text-xs text-white/30">
             This space moves at your pace.
           </p>
 
           <button
-            onClick={logoutHandler}
+            onClick={signoutHandler}
             className="text-xs text-white/35 hover:text-white/60 transition"
           >
-            Log out
+            Sign out
           </button>
         </footer>
 

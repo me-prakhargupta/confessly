@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <section className="min-h-screen flex items-center justify-center bg-zinc-950 px-6">
+    <section className="min-h-screen py-25 flex sm:items-center justify-center bg-zinc-950 px-6">
       <div className="max-w-xl w-full text-center">
 
         {/* Soft glow */}
