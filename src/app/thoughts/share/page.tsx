@@ -47,8 +47,8 @@ export default function ThoughtPage() {
 
         {/* Header */}
         <header className="space-y-4">
-          <h1 className="text-xl font-medium">
-            Share it here
+          <h1 className="text-4xl font-extrabold">
+            Share it <span className="italic font-serif font-bold text-orange-400">here</span>
           </h1>
 
           <p className="text-sm text-white/55 leading-relaxed max-w-md">

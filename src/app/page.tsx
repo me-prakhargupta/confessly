@@ -1,15 +1,19 @@
-import Navbar from "@/components/layout/Navbar";
-import Hero from "@/components/home/Hero";
-import Choices from "@/components/home/Choices";
-import Safety from "@/components/home/Safety";
+import Navbar from "@/components/Layout/Navbar";
+import Entry from "@/components/Site/Entry";
+import Philosophy from "@/components/Site/Philosophy";
+import Choices from "@/components/Site/Choices";
+import Field from "@/components/Site/Field";
+import Final from "@/components/Site/Final";
 
 export default function Home() {
     return(
-        <>
+        <>  
             <Navbar/>
-            <Hero/>
+            <Entry/>
+            <Philosophy/>
             <Choices/>
-            <Safety/>
+            <Field/>
+            <Final/>
         </>
     );
 }

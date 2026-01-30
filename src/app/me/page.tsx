@@ -30,7 +30,7 @@ export default function MePage() {
   };
 
   return (
-    <main className="relative min-h-screen px-6 py-16 text-white bg-black overflow-hidden">
+    <main className="relative min-h-screen px-6 py-20 sm:py-16 text-white bg-black overflow-hidden">
       {/* Ambient warmth */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-32 -left-32 h-[260px] w-[260px] rounded-full bg-orange-400/10 blur-[120px]" />
@@ -77,11 +77,11 @@ export default function MePage() {
         {/* Inbox */}
         <Link
           href="/me/inbox"
-          className="flex items-center justify-between border-b border-white/10 pb-3
+          className="flex items-center justify-between border-b  border-white/10 pb-3 px-2
             hover:border-white/25 transition"
         >
           <div>
-            <p className="text-sm text-white/80">Inbox</p>
+            <p className="text-sm text-white">Inbox</p>
             <p className="text-xs text-white/45">
               Things that reached you quietly
             </p>
@@ -93,33 +93,6 @@ export default function MePage() {
             </p>
           )}
         </Link>
-
-        {/* Direct send */}
-        {/* <section className="space-y-3">
-          <p className="text-xs text-white/40">
-            Want to write to someone directly?
-          </p>
-
-          <div className="flex items-center gap-4">
-            <input
-              type="text"
-              placeholder="Enter username…"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="flex-1 bg-transparent border-b border-white/15 px-1 py-2
-                text-sm text-white/80 placeholder:text-white/30
-                outline-none focus:border-white/40 transition"
-            />
-
-            <button
-              onClick={goToSendPage}
-              className="text-sm text-white/50 bg-white/10 px-6 py-2.5
-                rounded-full hover:text-white/85 transition"
-            >
-              Send →
-            </button>
-          </div>
-        </section> */}
 
         {/* Your thoughts */}
         <Link
@@ -136,14 +109,14 @@ export default function MePage() {
         </Link>
 
         {/* Footer */}
-        <footer className="pt-10 flex items-center justify-between">
+        <footer className="pt-10 px-2 flex items-center justify-between">
           <p className="text-xs text-white/30">
             This space moves at your pace.
           </p>
 
           <button
             onClick={signoutHandler}
-            className="text-xs text-white/35 hover:text-white/60 transition"
+            className="text-xs text-white/70 hover:text-white/90 transition"
           >
             Sign out
           </button>

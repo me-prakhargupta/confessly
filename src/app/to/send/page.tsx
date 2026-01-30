@@ -1,15 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { sendMessage } from "@/services/auth";
-import AuthInput from "@/components/input/AuthInput";
+import AuthInput from "@/components/Input/AuthInput";
 import { toast } from "sonner";
 
 export default function SendMessage() {
   const [form, setForm] = useState({
     username: "",
-    content: "",
+    message: "",
   });
 
   const [sending, setSending] = useState(false);
@@ -20,8 +19,8 @@ export default function SendMessage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const sendHandler = async () => {
-    if (!form.content.trim() || !form.username.trim()) {
+  const submitHandler = async () => {
+    if (!form.message.trim() || !form.username.trim()) {
       toast.error("Username and message are required");
       return;
     }
@@ -32,7 +31,7 @@ export default function SendMessage() {
       const res = await sendMessage(form);
 
       toast.success("Your message has been sent successfully.");
-      setForm({ username: "", content: "" });
+      setForm({ username: "", message: "" });
     } catch (err: any) {
       toast.error(err?.response?.data?.message || "Something went wrong");
     } finally {
@@ -95,8 +94,8 @@ export default function SendMessage() {
         {/* Message */}
         <div className="space-y-4">
           <textarea
-            name="content"
-            value={form.content}
+            name="message"
+            value={form.message}
             onChange={changeHandler}
             placeholder="You don’t have to get it right."
             rows={6}
@@ -139,8 +138,8 @@ export default function SendMessage() {
           </span>
 
           <button
-            onClick={sendHandler}
-            disabled={sending || !form.content.trim()}
+            onClick={submitHandler}
+            disabled={sending || !form.message.trim()}
             className="
               rounded-full
               px-7

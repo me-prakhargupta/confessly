@@ -4,7 +4,7 @@ import { signinUser } from "@/services/auth";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import AuthInput from "@/components/input/AuthInput";
+import AuthInput from "@/components/Input/AuthInput";
 import { toast } from "sonner";
 
 export default function Signin() {
@@ -26,8 +26,10 @@ export default function Signin() {
 
     try {
       await signinUser(form);
-      toast.success("Welcome back. You’ve been logged in successfully.");
+      toast.success("Welcome back.");
+      console.log("Pre router push");
       router.push("/me");
+      console.log("Post router push");
       setForm({ identifier: "", password: "" });
     } catch (err: any) {
       toast.error(err?.response?.data?.message || "Something went wrong")
@@ -37,55 +39,44 @@ export default function Signin() {
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col lg:flex-row bg-zinc-950 overflow-hidden">
-      <div
-        aria-hidden
-        className="
-          absolute inset-0
-          bg-[radial-gradient(circle_at_30%_20%,rgba(251,146,60,0.08),transparent_70%)]
-          pointer-events-none
-        "
-      />
+    <main className="relative min-h-screen flex flex-col lg:flex-row bg-black overflow-hidden">
+      
+      {/* BACKGROUND GLOW */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[400px] w-full bg-orange-500/[0.04] blur-[120px]" />
+      </div>
 
       {/* LEFT: FORM */}
-      <main className="relative mt-15 sm:mt-0 z-10 w-full lg:w-1/2 flex items-center justify-center px-4 sm:px-6 py-10 lg:border-r lg:border-white/10">
-        <div className="w-full max-w-md">
-
-          {/* Hero line */}
-          <h1 className="text-orange-400 text-2xl sm:text-3xl font-extrabold sm:font-extrabold leading-snug mb-7">
-             A quiet place to{" "}
-            <span className="bg-gradient-to-r from-orange-400 to-orange-300 bg-clip-text text-transparent">
-              return to.
-            </span></h1>
-
-          {/* Heading */}
-          {/* <h2 className="text-white text-xl sm:text-2xl font-bold mb-1">
-            A quiet place to return to.
-          </h2> */}
-          <p className="mb-4 text-white/60 font-medium text-sm sm:text-base">
-           To come back to what you’ve shared.
-          </p>
-
-          {/* Error */}
-          {/* {error && (
-            <p className="mb-4 text-sm text-red-400">
-              {error}
+      <section className="relative z-10 w-full lg:w-1/2 flex flex-col items-center justify-center px-6 py-20 lg:border-r lg:border-white/[0.05]">
+        <div className="w-full max-w-sm space-y-12">
+          
+          {/* Header */}
+          <header className="space-y-3">
+            <div className="flex items-center gap-3">
+               <div className="w-px h-4 bg-orange-500/40" />
+               <span className="text-orange-500/60 text-[10px] uppercase tracking-[0.4em] font-black">
+                 The Return
+               </span>
+            </div>
+            <h1 className="text-4xl font-extrabold tracking-tighter text-white">
+              Welcome <span className="text-stone-400 font-medium">back</span>
+            </h1>
+            <p className="text-stone-500 text-sm font-light">
+              A quiet place to come back to what you’ve shared.
             </p>
-          )} */}
+          </header>
 
           {/* Form */}
-          <form onSubmit={signinHandler} noValidate>
-            <div className="mt-4 sm:mt-6">
-              <AuthInput
-                type="text"
-                name="identifier"
-                lable="Username or email"
-                value={form.identifier}
-                onChange={changeHandler}
-              />
-            </div>
+          <form onSubmit={signinHandler} className="space-y-6">
+            <AuthInput
+              type="text"
+              name="identifier"
+              lable="Username or email"
+              value={form.identifier}
+              onChange={changeHandler}
+            />
 
-            <div className="mt-4 sm:mt-6">
+            <div className="space-y-2">
               <AuthInput
                 type="password"
                 name="password"
@@ -93,66 +84,56 @@ export default function Signin() {
                 value={form.password}
                 onChange={changeHandler}
               />
+              {/* <div className="flex justify-end">
+                <Link
+                  href="/accounts/reset"
+                  className="text-[10px] uppercase tracking-widest text-stone-600 hover:text-orange-400 transition-colors font-bold"
+                >
+                  Forgot?
+                </Link>
+              </div> */}
             </div>
 
-            <div className="mt-6">
+            <div className="pt-4">
               <button
                 type="submit"
                 disabled={loading}
                 className="
                   w-full
+                  py-4
                   rounded-full
-                  bg-orange-400
-                  border border-orange-400
-                  text-black font-semibold
-                  text-base sm:text-lg
-                  py-3 sm:py-3.5
-                  transition
-                  hover:bg-orange-300
-                  hover:cursor-pointer
-                  disabled:opacity-70
+                  bg-white
+                  text-black
+                  text-sm font-medium
+                  transition-all duration-300
+                  hover:bg-stone-200
+                  active:scale-[0.98]
+                  disabled:opacity-30
+                  cursor-pointer
                 "
               >
-                {loading ? "Logging in..." : "Continue"}
+                {loading ? "Verifying..." : "Continue"}
               </button>
             </div>
           </form>
 
-          {/* Forgot password */}
-          <div className="flex justify-center">
-            <Link
-              href="/accounts/reset"
-              className="inline-block mt-5 text-sm text-white/50 hover:text-white/70 transition"
-            >
-              Forgot password?
-            </Link>
-          </div>
-
-          {/* Signup */}
-          <div className="flex justify-center mt-8 sm:mt-10">
-            <Link
-              href="/accounts/signup"
-              className="
-                inline-block w-full
-                text-orange-400 text-center font-semibold
-                border border-orange-400
-                py-3 sm:py-4
-                rounded-full
-                hover:bg-zinc-900
-                transition
-                text-sm sm:text-base
-              "
-            >
-              Start fresh
-            </Link>
-          </div>
+          {/* Signup Link - Changed from a box to a clean text link */}
+          <footer className="text-center pt-6">
+             <p className="text-stone-500 text-sm">
+                Need a fresh start?{" "}
+                <Link href="/accounts/signup" className="text-white hover:text-orange-400 transition-colors font-semibold">
+                  Create account
+                </Link>
+             </p>
+          </footer>
         </div>
-      </main>
+      </section>
 
-      {/* RIGHT: IMAGE */}
-      <aside className="hidden lg:block lg:w-1/2 relative min-h-screen bg-[url('/login.jpg')] bg-cover bg-center">
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-black/20" />
+      {/* RIGHT: IMAGE - Updated with a cleaner overlay */}
+      <aside className="hidden lg:block lg:w-1/2 relative min-h-screen bg-[url('/login.jpg')] bg-cover bg-center grayscale hover:grayscale-0 transition-all duration-1000">
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-transparent" />
       </aside>
-    </div>
+    </main>
   );
 }

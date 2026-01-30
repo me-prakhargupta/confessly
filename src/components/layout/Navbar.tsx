@@ -2,71 +2,68 @@ import Link from "next/link";
 
 export default function ConfesslyDock() {
   return (
-    <nav className="relative bg-zinc-950 overflow-hidden">
-      {/* warm radial glow */}
+    <nav className="fixed top-0 left-0 right-0 z-[100] bg-black/50 backdrop-blur-md border-b border-white/[0.05]">
+      
+      {/* Subtle warm radial glow concentrated at the center */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(251,146,60,0.10),transparent_70%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(251,146,60,0.08),transparent_75%)]"
       />
 
-      {/* bottom border line */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-white/10" />
-
-      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-10 py-3 sm:py-4 flex items-center justify-between">
-
-        {/* Left: text logo */}
+      {/* Narrower container */}
+      <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 py-3 flex items-center justify-between">
+        
+        {/* Left: Text Logo */}
         <Link href="/" className="group flex items-center">
           <span className="
             text-white 
-            text-lg sm:text-xl 
-            font-bold 
-            tracking-[0.08em] sm:tracking-[0.1em] 
-            transition-colors duration-200 
+            text-lg sm:text-xl
+            font-extrabold 
+            tracking-tighter
+            transition-all duration-300 
+            group-hover:tracking-normal
             group-hover:text-orange-400
           ">
-            Emptied
+            Quietism
           </span>
+          <span className="ml-1 w-1 h-1 rounded-full bg-orange-500 opacity-0 group-hover:opacity-100 transition-opacity" />
         </Link>
 
-        {/* Right: actions */}
+        {/* Right: Actions */}
         <div className="flex items-center gap-2 sm:gap-4">
-
-          {/* Sign in - primary */}
+          
+          {/* Sign in */}
           <Link
             href="/accounts/signin"
             className="
-              relative inline-flex items-center justify-center
-              px-4 sm:px-7 py-2
-              min-w-[84px] sm:min-w-[110px]
+              inline-flex items-center justify-center
+              px-4 sm:px-5 py-2
               rounded-full
-              bg-zinc-950 text-white
+              text-stone-300
               font-semibold text-sm
-              overflow-hidden
-              transition-all hover:bg-zinc-900
-              border border-white/10
+              transition-all duration-300
+              hover:text-white
+              hover:bg-white/5
             "
           >
-            <span
-              aria-hidden
-              className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(120%_80%_at_100%_0%,rgba(251,146,60,0.35),transparent_60%)] opacity-70"
-            />
-            <span className="relative z-10">Sign in</span>
+            Sign in
           </Link>
 
-          {/* Sign up - secondary */}
+          {/* Sign up */}
           <Link
             href="/accounts/signup"
             className="
               inline-flex items-center justify-center
               px-4 sm:px-6 py-2
-              min-w-[84px] sm:min-w-[100px]
               rounded-full
-              text-sm font-medium
-              text-white/80
+              text-sm font-bold
+              text-white
+              bg-zinc-900
               border border-white/10
-              bg-white/5
-              hover:bg-white/10 hover:text-white
-              transition
+              hover:border-orange-500/50
+              hover:bg-zinc-800
+              transition-all duration-500
+              shadow-[0_0_20px_rgba(0,0,0,0.5)]
             "
           >
             Sign up

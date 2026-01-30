@@ -1,5 +1,5 @@
 import Link from "next/link";
-import AuthInput from "@/components/input/AuthInput";
+import AuthInput from "@/components/Input/AuthInput";
 
 export default function Reset() {
   return (

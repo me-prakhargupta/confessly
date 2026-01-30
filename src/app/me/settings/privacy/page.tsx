@@ -1,15 +1,15 @@
-export default function Me() {
-    return(
-        <>
-        Privacy<br/>
+// export default function Me() {
+//     return(
+//         <>
+//         Privacy<br/>
 
-Profile visibility (public / private)<br/>
+// Profile visibility (public / private)<br/>
 
-Default confession visibility<br/>
+// Default confession visibility<br/>
 
-Allow responses or not<br/>
+// Allow responses or not<br/>
 
-This directly maps to the boolean flag you discussed earlier.<br/>
-        </>
-    );
-}
+// This directly maps to the boolean flag you discussed earlier.<br/>
+//         </>
+//     );
+// }

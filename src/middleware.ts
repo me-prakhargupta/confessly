@@ -5,25 +5,42 @@ export function middleware(req: NextRequest) {
     const token = req.cookies?.get("accessToken")?.value;
     const { pathname } = req.nextUrl;
 
-    const unfinishedRoutes = [
-        "/accounts/reset",
-    ];
+    // const unfinishedRoutes = [
+    //     "/accounts/reset",
+    // ];
 
-    const isUnfinished = unfinishedRoutes.some(route => pathname.startsWith(route));
+    // const isUnfinished = unfinishedRoutes.some(route => pathname.startsWith(route));
 
-    if(isUnfinished) {
-        return NextResponse.redirect(new URL("/hold-on", req.url));
-    }
+    // if(isUnfinished) {
+    //     return NextResponse.redirect(new URL("/hold-on", req.url));
+    // }
 
     if(pathname.startsWith("/me") && !token) {
         return NextResponse.redirect(new URL("/accounts/signin", req.url));
+    }
+
+    const loggedRoutes = [
+        "/",
+        "accounts/:path*",
+        "/choose",
+        "/thoughts/:path*",
+        "to/:path*",
+    ]
+
+    const isLogged = loggedRoutes.some(route => pathname.startsWith(route));
+
+    if(isLogged && token) {
+        return NextResponse.redirect(new URL("/me", req.url));
     }
 
     return NextResponse.next();
 };
 
 export const config = {
-  matcher: ["/me/:path*",
-    "/accounts/reset/:path*"
+  matcher: ["/",
+    "/accounts/:path*",
+    "/choose",
+    "/thoughts/:path*",
+    "/to/:path*",
   ],
 };

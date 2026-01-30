@@ -3,28 +3,45 @@
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
+import { toast } from "sonner";
+import { sendMessage } from "@/services/auth";
 
 export default function SendToUserPage() {
   const { username } = useParams<{ username: string }>();
 
-  const [content, setContent] = useState("");
   const [sending, setSending] = useState(false);
 
-  const sendMessage = async () => {
-    if (!content.trim()) return;
+  const [message, setMessage] = useState("");
+  const changeHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+  }
+
+  const sendHandler = async(e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if(!message.trim()) {
+      return toast.error("Please provide a message to continue");
+    }
+
+    const messageInfo = {
+      username, message
+    }
 
     setSending(true);
 
-    // 🔒 Backend call comes later
-    // await fetch(`/api/message/${username}`, { ... })
-
-    setTimeout(() => {
+    try {
+      console.log("working")
+      await sendMessage(messageInfo);
+      toast.success("Your message has been sent successfully.");
+      setMessage("");
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || "Something went wrong");
+    } finally {
       setSending(false);
-    }, 800);
+    }
   };
 
   return (
-    <main className="relative min-h-screen px-6 py-16 text-white bg-black overflow-hidden">
+    <main className="relative min-h-screen px-6 py-22 sm:py-16 text-white bg-black overflow-hidden">
 
       {/* Ambient calm */}
       <div className="absolute inset-0 pointer-events-none">
@@ -34,18 +51,11 @@ export default function SendToUserPage() {
 
       <section className="relative z-10 max-w-xl mx-auto space-y-10">
 
-        {/* Back */}
-        {/* <Link
-          href="/me"
-          className="text-xs text-white/30 hover:text-white/50 transition"
-        >
-          ← Back to your space
-        </Link> */}
 
         {/* Context */}
         <header className="space-y-3">
           <h1 className="text-lg font-medium">
-            Write to <span className="text-white/80"><Link href={`/u/${username}`}>@{username}</Link></span>
+            Write to <span className="text-orange-400 italic font-serif font-bold"><Link href={`/u/${username}`}>@{username}</Link></span>
           </h1>
 
           <p className="text-sm text-white/50 leading-relaxed">
@@ -56,10 +66,11 @@ export default function SendToUserPage() {
         </header>
 
         {/* Textarea */}
+        <form onSubmit={sendHandler}>
         <section className="space-y-3">
           <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            value={message}
+            onChange={changeHandler}
             placeholder="Type what you want to say…"
             rows={6}
             className="
@@ -91,8 +102,8 @@ export default function SendToUserPage() {
           </span>
 
           <button
-            onClick={sendMessage}
-            disabled={sending || !content.trim()}
+            type="submit"
+            disabled={sending || !message.trim()}
             className="
               rounded-full
               px-6
@@ -109,7 +120,7 @@ export default function SendToUserPage() {
             {sending ? "Sending…" : "Send"}
           </button>
         </section>
-
+        </form>
       </section>
     </main>
   );

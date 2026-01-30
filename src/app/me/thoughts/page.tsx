@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { toast } from "sonner";
+import { shareThought } from "@/services/auth";
 
 const thoughts = [
   {
@@ -31,43 +33,43 @@ const thoughts = [
 ];
 
 export default function ThoughtsPage() {
+  const [open, setOpen] = useState(false);
   const [openComments, setOpenComments] = useState<string | null>(null);
-  const [newThought, setNewThought] = useState("");
-  const [posting, setPosting] = useState(false);
 
-  const handleShareThought = async () => {
-    if (!newThought.trim()) return;
+  const [thought, setThought] = useState("");
+  const changeHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setThought(e.target.value);
+  }
+
+  const [sharing, setSharing] = useState(false);
+
+
+  const shareHandler = async () => {
+    if(!thought.trim()) {
+      return toast.error("Thought cannot be empty or contain only whitespace.");
+    }
+
+    setSharing(true);
 
     try {
-      setPosting(true);
-
-      await fetch("/api/thoughts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // send cookies so backend can read user from token
-        body: JSON.stringify({
-          content: newThought,
-        }),
-      });
-
-      setNewThought("");
-      // later you can refetch thoughts from backend here
-    } catch (err) {
-      console.error("Failed to share thought", err);
+      await shareThought(thought);
+      toast.success("Your thought has been shared.");
+      setThought("");
+      setOpen(false);
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || "Failed to share thought");
     } finally {
-      setPosting(false);
+      setSharing(false);
     }
   };
 
   return (
-    <main className="min-h-screen bg-black text-white px-6 py-14">
+    <main className="min-h-screen bg-black text-white px-6 py-20 sm:py-14">
       <section className="max-w-3xl mx-auto space-y-10">
         {/* Header */}
         <header className="space-y-4">
           <div className="space-y-1">
-            <h1 className="text-2xl font-medium">Your thoughts</h1>
+            <h1 className="text-xl sm:text-3xl font-bold">Your <span className="text-orange-400 font-serif italic font-bold">thoughts</span></h1>
             <p className="text-sm text-white/40">
               What you’ve written, held here.
             </p>
@@ -105,7 +107,7 @@ export default function ThoughtsPage() {
         </header>
 
         {/* Share your thought */}
-        <section
+        {/* <section
           className="
             rounded-2xl
             bg-white/5
@@ -119,8 +121,8 @@ export default function ThoughtsPage() {
           </p>
 
           <textarea
-            value={newThought}
-            onChange={(e) => setNewThought(e.target.value)}
+            value={thought}
+            onChange={changeHandler}
             placeholder="Write something you want to put down…"
             rows={3}
             className="
@@ -132,8 +134,8 @@ export default function ThoughtsPage() {
 
           <div className="flex justify-end">
             <button
-              onClick={handleShareThought}
-              disabled={posting || !newThought.trim()}
+              onClick={shareHandler}
+              disabled={sharing || !thought.trim()}
               className="
                 text-xs px-4 py-2 rounded-lg
                 bg-orange-500/20 text-orange-300
@@ -142,10 +144,50 @@ export default function ThoughtsPage() {
                 transition
               "
             >
-              {posting ? "Sharing…" : "Share quietly"}
+              {sharing ? "Sharing…" : "Share quietly"}
             </button>
           </div>
-        </section>
+        </section> */}
+
+        <section className="rounded-2xl bg-white/5 backdrop-blur-md px-6 py-5 space-y-4">
+
+  <button
+    onClick={() => setOpen((p) => !p)}
+    className="text-sm text-white/60 flex items-start w-full"
+  >
+    Share your thought
+  </button>
+
+  {open && (
+    <>
+      <textarea
+        value={thought}
+        onChange={changeHandler}
+        onFocus={() => setOpen(true)}
+        placeholder="Write something you want to put down…"
+        rows={4}
+        className="w-full rounded-xl bg-white/5 px-4 py-3 text-sm
+                   text-white/80 placeholder:text-white/30
+                   outline-none focus:bg-white/8 transition resize-none"
+      />
+
+      <div className="flex justify-end">
+        <button
+          onClick={shareHandler}
+          disabled={sharing || !thought.trim()}
+          className="text-xs px-4 py-2 rounded-lg
+                     bg-orange-500/20 text-orange-300
+                     hover:bg-orange-500/30
+                     disabled:opacity-40 disabled:cursor-not-allowed
+                     transition"
+        >
+          {sharing ? "Sharing…" : "Share quietly"}
+        </button>
+      </div>
+    </>
+  )}
+</section>
+
 
         {/* Thoughts list */}
         <div className="space-y-6">

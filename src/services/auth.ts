@@ -14,7 +14,7 @@ type SigninData = {
 
 type MessageData = {
     username: string;
-    content: string;
+    message: string;
 }
 
 export const signupUser = async(data: SignupData) => {
@@ -28,7 +28,7 @@ export const signinUser = async(data: SigninData) => {
 };
 
 export const sendMessage = async(data: MessageData) => {
-    const res = await api.post("/api/v1/messages/send", data);
+    const res = await api.post("/api/v1/message/send", data);
     return res.data;
 };
 
@@ -39,7 +39,7 @@ export const shareThought = async(thought: string) => {
     return res.data;
 };
 
-export const meUser = async(token: string) => {
+export const getUser = async(token: string) => {
     const res = await api.get("api/v1/auth/me", {
         headers: {
             Authorization: `Bearer ${token}`

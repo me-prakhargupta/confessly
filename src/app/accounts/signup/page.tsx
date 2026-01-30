@@ -3,7 +3,7 @@
 import { signupUser } from "@/services/auth";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import AuthInput from "@/components/input/AuthInput";
+import AuthInput from "@/components/Input/AuthInput";
 import Link from "next/link";
 import { toast } from "sonner";
 
@@ -17,7 +17,6 @@ export default function Signup() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -25,15 +24,13 @@ export default function Signup() {
 
   const signupHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
 
     try {
-      const res = await signupUser(form);
-      toast.success("Your account has been created successfully. We’re glad to have you with us.");
+      await signupUser(form);
+      toast.success("Account created successfully.");
       router.push("/me");
     } catch (err: any) {
-      setError(err?.response?.data?.message || "Something went wrong");
       toast.error(err?.response?.data?.message || "Something went wrong");
     } finally {
       setLoading(false);
@@ -41,63 +38,85 @@ export default function Signup() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center px-4 py-14 bg-zinc-950 overflow-hidden">
+    <main className="min-h-screen flex flex-col lg:flex-row bg-zinc-950 overflow-x-hidden relative">
+      
+      {/* Image / Atmosphere Layer */}
+      <aside className="absolute inset-0 lg:relative lg:inset-auto lg:w-[40%] h-full overflow-hidden z-0">
+        <img
+          src="https://images.unsplash.com/photo-1718049411547-fb7fbb7a8e68?q=80&w=327&auto=format&fit=crop"
+          alt="Atmospheric backdrop"
+          className="w-full h-full object-cover object-[center_80%] grayscale-[0.4] brightness-[0.75] lg:brightness-[0.85]"
+        />
 
-      {/* subtle ambient warmth */}
-      <div
-        aria-hidden
+        {/* Mobile fade to dark */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/60 to-zinc-950 lg:hidden" />
+
+        {/* Desktop blend into content */}
+        <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-transparent to-zinc-950" />
+      </aside>
+
+      {/* Content Layer */}
+      <section
         className="
-          absolute inset-0
-          bg-[radial-gradient(circle_at_30%_20%,rgba(251,146,60,0.08),transparent_70%)]
-          pointer-events-none
+          relative flex-1 flex items-start justify-center z-10
+          px-6
+          pt-24 pb-16
+          sm:pt-28 sm:pb-20
+          lg:pt-20 lg:pb-10
         "
-      />
+      >
+        {/* Desktop ambient glows */}
+        <div className="hidden lg:block absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[80%] h-[60%] bg-orange-500/[0.04] blur-[120px] rounded-full" />
+          <div className="absolute bottom-[-10%] right-[-5%] w-[40%] h-[40%] bg-white/[0.02] blur-[100px] rounded-full" />
+        </div>
 
-      <div className="relative py-10 sm:py-0 z-10 w-full max-w-xl">
+        <div className="relative z-10 w-full max-w-md space-y-6 lg:space-y-8">
+          
+          {/* Header */}
+          <header className="space-y-3">
+            <div className="flex items-center gap-3">
+              <div className="w-px h-4 bg-orange-500/40" />
+              <span className="text-orange-500/60 text-[10px] uppercase tracking-[0.4em] font-black">
+                The Beginning
+              </span>
+            </div>
 
-        {/* HEADER */}
-        <header className="mb-10 px-2 sm:text-center">
-          <h1 className="text-white font-extrabold text-2xl sm:text-3xl md:text-4xl">
-            A place to begin
-          </h1>
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tighter text-white">
+              Create <span className="text-stone-400 font-medium">account</span>
+            </h1>
 
-          <p className="mt-3 text-white/60 text-sm sm:text-base">
-            So you have somewhere to return to.
-          </p>
-        </header>
+            <p className="text-zinc-300 lg:text-zinc-500 text-sm font-normal">
+              A place to begin, so you have somewhere to return to.
+            </p>
+          </header>
 
-        {/* FORM */}
-        <form onSubmit={signupHandler} className="space-y-6">
-          <div>
+          {/* Form */}
+          <form onSubmit={signupHandler} className="space-y-4 lg:space-y-5">
             <AuthInput
-              type="text"
+              type="email"
               name="email"
-              lable="Email"
+              lable="Email Address"
               value={form.email}
               onChange={changeHandler}
             />
-            <p className="mt-1 text-sm text-white/50">
-              We’ll only use this to help you sign in
-            </p>
-          </div>
 
-          <AuthInput
-            type="password"
-            name="password"
-            lable="Password"
-            value={form.password}
-            onChange={changeHandler}
-          />
+            <AuthInput
+              type="password"
+              name="password"
+              lable="Password"
+              value={form.password}
+              onChange={changeHandler}
+            />
 
-          <AuthInput
-            type="text"
-            name="fullname"
-            lable="Full Name"
-            value={form.fullname}
-            onChange={changeHandler}
-          />
+            <AuthInput
+              type="text"
+              name="fullname"
+              lable="Full Name"
+              value={form.fullname}
+              onChange={changeHandler}
+            />
 
-          <div>
             <AuthInput
               type="text"
               name="username"
@@ -105,82 +124,58 @@ export default function Signup() {
               value={form.username}
               onChange={changeHandler}
             />
-            <p className="mt-1 text-sm text-white/50">
-              Lowercase letters, numbers, and underscores only.
+
+            <p className="text-xs text-zinc-400 lg:text-zinc-500 leading-relaxed font-normal">
+              By continuing, you agree to our{" "}
+              <Link
+                href="/"
+                className="text-zinc-300 lg:text-zinc-400 hover:text-orange-400 underline decoration-zinc-800 transition-colors"
+              >
+                Terms
+              </Link>{" "}
+              and{" "}
+              <Link
+                href="/"
+                className="text-zinc-300 lg:text-zinc-400 hover:text-orange-400 underline decoration-zinc-800 transition-colors"
+              >
+                Privacy Policy
+              </Link>
+              .
             </p>
-          </div>
 
-          {/* TERMS */}
-          <p className="text-sm text-white/50 leading-relaxed">
-            By creating an account, you agree to Confessly’s{" "}
-            <Link href="/" className="text-orange-400 hover:text-orange-300">
-              Terms
-            </Link>
-            ,{" "}
-            <Link href="/" className="text-orange-400 hover:text-orange-300">
-              Privacy Policy
-            </Link>{" "}
-            and{" "}
-            <Link href="/" className="text-orange-400 hover:text-orange-300">
-              Cookies Policy
-            </Link>
-            .
-          </p>
+            <button
+              type="submit"
+              disabled={loading}
+              className="
+                group relative w-full py-3.5 rounded-xl
+                bg-orange-500 text-black
+                font-bold text-sm
+                transition-all duration-300
+                hover:bg-orange-400
+                hover:shadow-[0_0_30px_rgba(249,115,22,0.35)]
+                active:scale-[0.98]
+                disabled:opacity-50
+                cursor-pointer
+              "
+            >
+              {loading ? "Creating..." : "Continue"}
+            </button>
+          </form>
 
-          {/* SUBMIT */}
-          <button
-  type="submit"
-  disabled={loading}
-  className="
-    w-full
-    relative
-    rounded-full
-    bg-orange-400
-    border border-orange-400
-    text-black
-    font-medium
-    text-base sm:text-lg
-    py-3 sm:py-3.5
-    transition-all
-    hover:bg-orange-300
-    hover:shadow-[0_0_20px_rgba(251,146,60,0.35)]
-    active:scale-[0.99]
-    disabled:opacity-70
-    hover:cursor-pointer
-    disabled:cursor-not-allowed
-  "
->
-  {loading ? "Creating account…" : "Continue"}
-</button>
-
-        </form>
-
-        {/* SIGN IN LINK */}
-        <div className="mt-10">
-          <Link
-  href="/accounts/signin"
-  className="
-    inline-flex
-    w-full
-    justify-center
-    text-center
-    font-medium
-    border border-white/10
-    py-3 sm:py-4
-    rounded-full
-    text-sm sm:text-base
-    text-white/60
-    transition-all
-    hover:text-white
-    hover:border-white/20
-    hover:bg-zinc-900/40
-  "
->
-  Sign in instead
-</Link>
-
+          {/* Footer */}
+          <footer className="pt-4 border-t border-white/5 text-center">
+            <p className="text-zinc-300 lg:text-zinc-500 text-sm font-normal">
+              Already have an account?{" "}
+              <Link
+                href="/accounts/signin"
+                className="text-white hover:text-orange-500 font-semibold transition-colors"
+              >
+                Sign in
+              </Link>
+            </p>
+          </footer>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }
